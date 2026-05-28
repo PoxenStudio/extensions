@@ -42,7 +42,7 @@
       if (msg.error) {
         setListContent(null, msg.error);
       } else {
-        const books = ((msg.data && msg.data.books) || []).slice(0, 5);
+        const books = ((msg.data && msg.data.books) || []).slice(0, 30);
         if (overlayEl) overlayEl.dataset.host = msg.host || '';
         setListContent(
           books.length > 0 ? books : null,

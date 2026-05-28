@@ -218,8 +218,12 @@ function fetchWithTimeout(url, options = {}) {
 }
 
 function showMsg(el, type, text) {
-  el.className = type ? `${el.id === 'loginMsg' ? 'inline-msg' : 'upload-msg'} ${type}` :
-                        (el.id === 'loginMsg' ? 'inline-msg' : 'upload-msg');
+  if (!el) {
+    console.warn('[MyBooks Popup] showMsg called with undefined element', { type, text });
+    return;
+  }
+  const baseClass = (el.id === 'loginMsg') ? 'inline-msg' : 'upload-msg';
+  el.className = type ? `${baseClass} ${type}` : baseClass;
   el.textContent = text;
 }
 
