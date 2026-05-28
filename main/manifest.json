@@ -1,12 +1,25 @@
 {
   "manifest_version": 3,
   "name": "MyBooks",
-  "version": "1.0.0",
-  "description": "MyBooks 书库管理扩展，支持连接服务器并上传图书",
+  "version": "1.1.0",
+  "description": "MyBooks 书库管理扩展，支持连接服务器、上传图书和右键搜索。",
+  "author": "PoxenStudio",
+  "homepage_url": "https://mybooks.top",
   "action": {
     "default_popup": "popup.html",
     "default_title": "MyBooks"
   },
-  "permissions": ["storage"],
-  "host_permissions": ["<all_urls>"]
+  "permissions": ["storage", "contextMenus"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
 }

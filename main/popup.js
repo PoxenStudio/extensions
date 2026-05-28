@@ -47,11 +47,11 @@ function loadConfig() {
     passwordInput.value   = cfg.password;
 
     if (cfg.serverHost) {
+      expandConfig(false);   // already configured → collapse by default
       refreshStatus();
     } else {
       setStatus('unconfigured', '未配置');
-      // Expand config panel when server is not configured yet
-      expandConfig(true);
+      expandConfig(true);    // not yet configured → expand so user can fill in
     }
   });
 }
@@ -143,6 +143,7 @@ async function login() {
     const data = await res.json();
     if (data.err === 'ok') {
       showMsg(loginMsgEl, 'success', '登录成功');
+      expandConfig(false);   // login succeeded → collapse config panel
       refreshStatus();
     } else {
       showMsg(loginMsgEl, 'error', data.msg || '登录失败');
@@ -174,7 +175,7 @@ async function uploadFile(file) {
 
   try {
     const form = new FormData();
-    form.append('file', file);
+    form.append('ebook', file);
 
     // Upload without timeout so large files aren't aborted
     const res = await fetch(`${cfg.serverHost}/api/book/upload`, {
