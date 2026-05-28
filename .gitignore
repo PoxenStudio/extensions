@@ -1,0 +1,9 @@
+build/
+dist/
+downloads/
+*.log
+node_modules
+.npm
+package-lock.json
+.DS_Store
+.vscode

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyBooks</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Header: 服务器标题 + 状态 -->
+    <div class="header">
+      <h1 id="serverTitle">MyBooks</h1>
+      <div class="status-row">
+        <span id="statusBadge" class="badge badge-unconfigured">未配置</span>
+        <button id="refreshBtn" class="icon-btn" title="刷新状态">&#x21bb;</button>
+      </div>
+    </div>
+
+    <!-- 服务器配置（可折叠） -->
+    <div class="card">
+      <div class="card-header" id="configToggle">
+        <span>服务器配置</span>
+        <span class="toggle-icon" id="toggleIcon">&#9660;</span>
+      </div>
+      <div class="card-body" id="configBody">
+        <div class="form-group">
+          <label for="serverHost">服务器地址</label>
+          <input type="text" id="serverHost" placeholder="http://127.0.0.1:8082" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="username">用户名</label>
+          <input type="text" id="username" placeholder="用户名" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="password">密码</label>
+          <input type="password" id="password" placeholder="密码" autocomplete="current-password" />
+        </div>
+        <div id="loginMsg" class="inline-msg" role="alert" aria-live="polite"></div>
+        <button id="loginBtn" class="btn btn-primary">登录</button>
+      </div>
+    </div>
+
+    <!-- 文件导入区域 -->
+    <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="拖放或点击上传图书文件">
+      <div id="dropContent" class="drop-content">
+        <div class="drop-icon" aria-hidden="true">&#128218;</div>
+        <p class="drop-label">拖放文件至此上传</p>
+        <p class="drop-hint">epub &nbsp;/&nbsp; azw3 &nbsp;/&nbsp; mobi &nbsp;/&nbsp; pdf &nbsp;/&nbsp; docx</p>
+      </div>
+      <div id="uploadProgress" class="upload-progress hidden" aria-live="polite">
+        <div class="spinner" role="status" aria-label="上传中"></div>
+        <p>上传中...</p>
+      </div>
+    </div>
+    <div id="uploadMsg" class="upload-msg" role="alert" aria-live="polite"></div>
+
+    <!-- 隐藏文件选择 input -->
+    <input type="file" id="fileInput" accept=".epub,.azw3,.mobi,.pdf,.docx" style="display:none" />
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

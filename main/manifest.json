@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "MyBooks",
+  "version": "1.0.0",
+  "description": "MyBooks 书库管理扩展，支持连接服务器并上传图书",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "MyBooks"
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"]
+}

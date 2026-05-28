@@ -1,0 +1,330 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: #222;
+  background: #f5f6f7;
+  width: 320px;
+  min-height: 100px;
+}
+
+#app {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Header ──────────────────────────────────────── */
+
+.header {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 12px 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+.header h1 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Status badge ─────────────────────────────────── */
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 9px;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+.badge-unconfigured {
+  background: #ebebeb;
+  color: #777;
+}
+
+.badge-loading {
+  background: #fff8e1;
+  color: #8a6500;
+}
+
+.badge-ok {
+  background: #e6f4ea;
+  color: #1a6e31;
+}
+
+.badge-error {
+  background: #fdecea;
+  color: #b71c1c;
+}
+
+/* ── Icon button (refresh) ────────────────────────── */
+
+.icon-btn {
+  background: none;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.icon-btn:hover {
+  background: #eee;
+  border-color: #bbb;
+}
+
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.icon-btn.spinning {
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── Card (collapsible config section) ──────────── */
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.card-header:hover {
+  background: #eef0f2;
+}
+
+.toggle-icon {
+  font-size: 10px;
+  color: #888;
+  transition: transform 0.2s;
+}
+
+.card-header.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.card-body {
+  padding: 10px 12px 12px;
+  border-top: 1px solid #eee;
+}
+
+.card-body.hidden {
+  display: none;
+}
+
+/* ── Form ─────────────────────────────────────────── */
+
+.form-group {
+  margin-bottom: 8px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #222;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: #fff;
+}
+
+.form-group input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,.15);
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s, filter 0.15s;
+  margin-top: 6px;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #4a90e2;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+/* ── Inline message (under login) ────────────────── */
+
+.inline-msg {
+  font-size: 11px;
+  min-height: 15px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.inline-msg.success { color: #1a6e31; }
+.inline-msg.error   { color: #b71c1c; }
+
+/* ── Drop zone ────────────────────────────────────── */
+
+.drop-zone {
+  background: #fff;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+  text-align: center;
+  padding: 16px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.drop-zone:hover,
+.drop-zone:focus-visible {
+  border-color: #4a90e2;
+  background: #f0f7ff;
+  outline: none;
+}
+
+.drop-zone.drag-over {
+  border-color: #4a90e2;
+  background: #e6f0fc;
+}
+
+.drop-content {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.drop-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.drop-label {
+  font-size: 12px;
+  color: #444;
+  font-weight: 500;
+}
+
+.drop-hint {
+  font-size: 10px;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* ── Upload progress overlay ─────────────────────── */
+
+.upload-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.upload-progress p {
+  font-size: 12px;
+  color: #555;
+}
+
+/* ── Upload result message ────────────────────────── */
+
+.upload-msg {
+  font-size: 11px;
+  min-height: 15px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.upload-msg.success { color: #1a6e31; }
+.upload-msg.error   { color: #b71c1c; }
+
+/* ── Spinner ──────────────────────────────────────── */
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #4a90e2;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Utility ──────────────────────────────────────── */
+
+.hidden {
+  display: none !important;
+}
