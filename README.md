@@ -6,6 +6,9 @@
 
 这只是一个小功能，期望可以给你带来一些灵感。
 
+## MyBooks WebAPI Document
+[MyBooks Web API](https://github.com/PoxenStudio/mybooks/blob/develop/document/WebAPI.md)
+
 
 ## 安装方式
 1. 下载扩展程序包并解压
