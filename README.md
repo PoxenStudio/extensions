@@ -7,7 +7,7 @@
 
 这只是一个小功能，期望可以给你带来一些灵感。
 
-适用于Chromium内核的浏览器，如Chrome、Edge、夸克等。不适于Safari等基于WebKit的浏览器。
+适用于Chromium内核的浏览器，如Chrome、Edge、夸克等。不适用于Safari等基于WebKit的浏览器。
 
 ## MyBooks WebAPI Document
 [MyBooks Web API](https://github.com/PoxenStudio/mybooks/blob/develop/document/WebAPI.md)
