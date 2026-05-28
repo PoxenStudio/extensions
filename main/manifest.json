@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MyBooks",
-  "version": "1.0.0",
+  "version": "0.1",
   "description": "MyBooks 书库管理扩展，支持连接服务器、上传图书和右键搜索。",
   "author": "PoxenStudio",
   "homepage_url": "https://mybooks.top",
