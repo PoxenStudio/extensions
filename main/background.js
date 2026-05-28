@@ -25,7 +25,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: 'mybooks-search',
-      title: '【MyBooks】搜索书库同名图书',
+      title: '[MyBooks]搜索书库同名图书',
       contexts: ['selection'],
     });
     log('Context menu item created');
@@ -148,6 +148,38 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       error: `连接失败：${e.message}`,
     });
   }
+});
+
+// ── Image proxy (for content script covers) ─────────────────────────────────────
+
+/**
+ * The content script requests cover images via this handler so that the
+ * fetch runs in the background (bypassing the host page's CSP) and the
+ * result is returned as a data: URL safe to assign to <img>.src.
+ */
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (msg.type !== 'mybooks-fetch-image') return false;
+  log('Image proxy fetch:', msg.url);
+  fetch(msg.url, { credentials: 'include' })
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.blob();
+    })
+    .then(
+      (blob) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload  = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        }),
+    )
+    .then((dataUrl) => sendResponse({ dataUrl }))
+    .catch((e) => {
+      warn('Image proxy failed:', e.message);
+      sendResponse({ error: e.message });
+    });
+  return true; // keep message channel open for async sendResponse
 });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

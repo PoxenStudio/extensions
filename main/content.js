@@ -100,6 +100,8 @@
     if (!listEl) return;
     const effectiveHost = host || overlayEl.dataset.host || '';
     listEl.innerHTML = buildListHTML(books, msg, effectiveHost);
+    // Proxy cover images through the background SW to avoid page CSP restrictions
+    loadCovers(listEl);
   }
 
   function buildListHTML(books, msg, host) {
@@ -112,10 +114,10 @@
 
   function bookItemHTML(b, host) {
     const bookUrl = host ? `${host}/book/${b.id}` : '#';
-    const cover   = b.thumb || b.img || '';
+    const cover   = resolveUrl(b.thumb || b.img || '', host);
     return `
       <a class="${NS}-item" href="${escAttr(bookUrl)}" target="_blank" rel="noopener noreferrer">
-        <img class="${NS}-cover" src="${escAttr(cover)}" alt="" loading="lazy" />
+        <img class="${NS}-cover" src="" data-cover-src="${escAttr(cover)}" alt="" />
         <div class="${NS}-info">
           <div class="${NS}-title"  title="${escAttr(b.title)}">${escHtml(b.title)}</div>
           <div class="${NS}-author" title="${escAttr(b.author)}">${escHtml(b.author)}</div>
@@ -185,5 +187,33 @@
 
   function escAttr(s) {
     return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /**
+   * Resolve a potentially relative cover URL against the server host.
+   * The backend returns paths like "get/thumb_240_320/8626.jpg?t=..." when
+   * cdn_url is empty; we must prepend the host to make them absolute.
+   */
+  function resolveUrl(url, host) {
+    if (!url) return '';
+    if (/^https?:\/\//.test(url) || url.startsWith('data:')) return url;
+    const base = (host || '').replace(/\/+$/, '');
+    return `${base}/${url.replace(/^\/+/, '')}`;
+  }
+
+  /**
+   * For each <img data-cover-src="..."> inside containerEl, ask the background
+   * service worker to fetch the image and return a data: URL.  This sidesteps
+   * any Content-Security-Policy restrictions on the host page.
+   */
+  function loadCovers(containerEl) {
+    containerEl.querySelectorAll(`img[data-cover-src]`).forEach((img) => {
+      const url = img.dataset.coverSrc;
+      if (!url) return;
+      chrome.runtime.sendMessage({ type: 'mybooks-fetch-image', url }, (resp) => {
+        if (chrome.runtime.lastError) return; // extension context gone
+        if (resp && resp.dataUrl) img.src = resp.dataUrl;
+      });
+    });
   }
 })();
