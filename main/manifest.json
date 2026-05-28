@@ -14,7 +14,7 @@
     "default_popup": "popup.html",
     "default_title": "MyBooks"
   },
-  "permissions": ["storage", "contextMenus"],
+  "permissions": ["storage", "contextMenus", "scripting"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"

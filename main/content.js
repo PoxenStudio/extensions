@@ -30,7 +30,12 @@
 
   // ── Message handler ──────────────────────────────────────────────────────────
 
-  chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+    // Ping: lets background.js detect whether this script is already injected
+    if (msg.type === 'mybooks-ping') {
+      sendResponse({ ok: true });
+      return false;
+    }
     if (msg.type === 'mybooks-search-start') {
       showOverlay(msg.text, null, '搜索中…');
     } else if (msg.type === 'mybooks-search-result') {
