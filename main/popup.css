@@ -76,6 +76,11 @@ body {
   color: #b71c1c;
 }
 
+.badge-upgrade {
+  background: #d32f2f;
+  color: #fff;
+}
+
 /* ── Icon button (refresh) ────────────────────────── */
 
 .icon-btn {

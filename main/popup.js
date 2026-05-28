@@ -17,6 +17,7 @@ const FETCH_TIMEOUT_MS = 12000;
 
 const serverTitleEl   = document.getElementById('serverTitle');
 const statusBadgeEl   = document.getElementById('statusBadge');
+const upgradeBadgeEl  = document.getElementById('upgradeBadge');
 const refreshBtn      = document.getElementById('refreshBtn');
 const configToggle    = document.getElementById('configToggle');
 const configBody      = document.getElementById('configBody');
@@ -102,8 +103,13 @@ async function refreshStatus() {
     if (data.err === 'ok' && data.sys) {
       const title   = data.sys.title   || 'MyBooks';
       const version = data.sys.version || '';
+      const upgrable = data.sys.upgrable;
+      const upgrableVersion = (upgrable && typeof upgrable === 'object') ? (upgrable.rev || '') : (upgrable || '');
       serverTitleEl.textContent = title;
       setStatus('ok', version || '已连接');
+      const canUpgrade = upgrableVersion && upgrableVersion !== version;
+      upgradeBadgeEl.classList.toggle('hidden', !canUpgrade);
+      upgradeBadgeEl.title = canUpgrade ? `最新版本：${upgrableVersion}` : '';
     } else {
       setStatus('error', '连接失败');
     }

@@ -28,7 +28,6 @@ chrome.runtime.onInstalled.addListener(async () => {
       title: '[MyBooks]搜索书库同名图书',
       contexts: ['selection'],
     });
-    log('Context menu item created');
   });
 
   // Set initial enabled state based on current config
@@ -64,7 +63,6 @@ async function ensureContentScript(tabId) {
   // Try pinging the existing content script
   try {
     await chrome.tabs.sendMessage(tabId, { type: 'mybooks-ping' });
-    log('Content script already active in tab', tabId);
     return true;
   } catch {
     log('Content script not found, injecting into tab', tabId);
@@ -74,7 +72,6 @@ async function ensureContentScript(tabId) {
   try {
     await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
     await chrome.scripting.insertCSS({ target: { tabId }, files: ['content.css'] });
-    log('Content script injected successfully into tab', tabId);
     return true;
   } catch (e) {
     err('Failed to inject content script:', e.message);
@@ -88,7 +85,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId !== 'mybooks-search') return;
 
   const text = (info.selectionText || '').trim().slice(0, 100);
-  log(`Context menu clicked, selected text: "${text}", tabId: ${tab?.id}`);
 
   if (!text || !tab?.id) {
     warn('Ignoring click: empty text or missing tab');
@@ -103,12 +99,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 
   // Tell content script to show loading overlay
-  log('Sending search-start to tab', tab.id);
   safeSend(tab.id, { type: 'mybooks-search-start', text });
 
   // Resolve server host from storage
   const { serverHost } = await chrome.storage.local.get(['serverHost']);
-  log('Resolved serverHost:', serverHost || '(not set)');
 
   if (!serverHost) {
     warn('serverHost not configured, aborting search');
@@ -125,15 +119,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const url = new URL(`${serverHost}/api/search`);
     url.searchParams.set('name', `title:${text}`);
     url.searchParams.set('size', '5');
-    log('Fetching:', url.toString());
 
     const res = await fetch(url.toString(), { credentials: 'include' });
-    log('Response status:', res.status);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
-    log('Search result: err=%s, total=%s', data.err, data.total);
-
     safeSend(tab.id, {
       type: 'mybooks-search-result',
       text,
@@ -159,7 +149,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
  */
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type !== 'mybooks-fetch-image') return false;
-  log('Image proxy fetch:', msg.url);
   fetch(msg.url, { credentials: 'include' })
     .then((r) => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -186,7 +175,6 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
 /** Send a message to a tab, silently swallowing errors (e.g. tab closed). */
 function safeSend(tabId, msg) {
-  log('safeSend to tab', tabId, msg.type);
   chrome.tabs.sendMessage(tabId, msg).catch((e) => {
     warn('tabs.sendMessage failed (tab may have no content script):', e.message);
   });

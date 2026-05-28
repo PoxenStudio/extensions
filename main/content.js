@@ -102,6 +102,8 @@
     listEl.innerHTML = buildListHTML(books, msg, effectiveHost);
     // Proxy cover images through the background SW to avoid page CSP restrictions
     loadCovers(listEl);
+    // Re-position now that the overlay has its final height
+    positionOverlay(overlayEl);
   }
 
   function buildListHTML(books, msg, host) {
