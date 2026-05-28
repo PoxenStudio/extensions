@@ -186,7 +186,10 @@ async function uploadFile(file) {
 
     const data = await res.json();
     if (data.err === 'ok') {
-      showMsg(uploadMsgEl, 'success', `上传成功！书籍 ID：${data.book_id}`);
+      const bookUrl = `${cfg.serverHost}/book/${data.book_id}`;
+      showMsg(uploadMsgEl, 'success', '');
+      uploadMsgEl.innerHTML =
+        `上传成功！<a href="${bookUrl}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">书籍 #${data.book_id}</a>`;
     } else {
       showMsg(uploadMsgEl, 'error', data.msg || '上传失败');
     }
