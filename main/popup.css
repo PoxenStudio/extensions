@@ -261,6 +261,22 @@ body {
   background: #e6f0fc;
 }
 
+.drop-zone.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+.drop-zone.disabled:hover,
+.drop-zone.disabled:focus-visible {
+  border-color: #ccc;
+  background: transparent;
+}
+
+.drop-zone.disabled .drop-content {
+  color: #999;
+}
+
 .drop-content {
   pointer-events: none;
   display: flex;

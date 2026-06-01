@@ -52,6 +52,9 @@ function loadConfig() {
     if (isLoggedIn) {
       loginBtn.textContent = '登出';
       disableConfigInputs(true);
+      setDropZoneDisabled(false);
+    } else {
+      setDropZoneDisabled(true);
     }
 
     if (cfg.serverHost) {
@@ -90,6 +93,16 @@ function disableConfigInputs(disable) {
   serverHostInput.disabled = disable;
   usernameInput.disabled   = disable;
   passwordInput.disabled   = disable;
+}
+
+function setDropZoneDisabled(disabled) {
+  if (disabled) {
+    dropZone.classList.add('disabled');
+    dropZone.removeAttribute('tabindex');
+  } else {
+    dropZone.classList.remove('disabled');
+    dropZone.setAttribute('tabindex', '0');
+  }
 }
 
 // ── Status helpers ────────────────────────────────────────────────────────────
@@ -180,6 +193,7 @@ async function login() {
       saveLoginStatus(true);
       loginBtn.textContent = '登出';
       disableConfigInputs(true);
+      setDropZoneDisabled(false);
       expandConfig(false);   // login succeeded → collapse config panel
       refreshStatus();
     } else {
@@ -212,6 +226,7 @@ async function logout() {
       saveLoginStatus(false);
       loginBtn.textContent = '登录';
       disableConfigInputs(false);
+      setDropZoneDisabled(true);
     } else {
       showMsg(loginMsgEl, 'error', data.msg || '登出失败');
     }
@@ -327,11 +342,13 @@ passwordInput.addEventListener('keydown', (e) => {
 // ── Drag & drop ───────────────────────────────────────────────────────────────
 
 dropZone.addEventListener('dragover', (e) => {
+  if (!isLoggedIn) return;
   e.preventDefault();
   dropZone.classList.add('drag-over');
 });
 
 dropZone.addEventListener('dragleave', (e) => {
+  if (!isLoggedIn) return;
   // Only remove class when actually leaving the drop zone (not child elements)
   if (!dropZone.contains(e.relatedTarget)) {
     dropZone.classList.remove('drag-over');
@@ -339,6 +356,7 @@ dropZone.addEventListener('dragleave', (e) => {
 });
 
 dropZone.addEventListener('drop', (e) => {
+  if (!isLoggedIn) return;
   e.preventDefault();
   dropZone.classList.remove('drag-over');
   const files = e.dataTransfer.files;
@@ -349,11 +367,11 @@ dropZone.addEventListener('drop', (e) => {
 
 // Click to open native file picker
 dropZone.addEventListener('click', () => {
-  fileInput.click();
+  if (isLoggedIn) fileInput.click();
 });
 
 dropZone.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
+  if (isLoggedIn && (e.key === 'Enter' || e.key === ' ')) {
     e.preventDefault();
     fileInput.click();
   }
