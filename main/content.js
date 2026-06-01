@@ -123,6 +123,8 @@
         <div class="${NS}-info">
           <div class="${NS}-title"  title="${escAttr(b.title)}">${escHtml(b.title)}</div>
           <div class="${NS}-author" title="${escAttr(b.author)}">${escHtml(b.author)}</div>
+          <!-- 显示文件格式的badge, b.files 是一个数组，每个元素是一个文件路径-->
+          ${(b.files || []).map((f) => `<div class="${NS}-file" title="${escAttr(f.format)}">${escHtml(f.format)}</div>`).join('')}
         </div>
       </a>`;
   }

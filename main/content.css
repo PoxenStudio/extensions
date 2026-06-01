@@ -145,3 +145,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+#mybooks-ext-overlay .mybooks-ext-file {
+  background-color: #003153;
+  border-radius: 8px;
+  padding: 2px 8px;
+  color: white;
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 11px;
+  margin-top: 4px;
+}
