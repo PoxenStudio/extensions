@@ -39,15 +39,15 @@ let cfg = { serverHost: '', username: '', password: '' };
 let isLoggedIn = false;
 
 function loadConfig() {
-  chrome.storage.local.get(['serverHost', 'username', 'password', 'isLoggedIn'], (stored) => {
+  chrome.storage.local.get(['serverHost', 'username', 'isLoggedIn'], (stored) => {
     cfg.serverHost = stored.serverHost || '';
     cfg.username   = stored.username   || '';
-    cfg.password   = stored.password   || '';
+    cfg.password   = '';
     isLoggedIn     = stored.isLoggedIn || false;
 
     serverHostInput.value = cfg.serverHost;
     usernameInput.value   = cfg.username;
-    passwordInput.value   = cfg.password;
+    passwordInput.value   = '';
 
     if (isLoggedIn) {
       loginBtn.textContent = '登出';
@@ -80,13 +80,16 @@ function saveConfig() {
   chrome.storage.local.set({
     serverHost: cfg.serverHost,
     username:   cfg.username,
-    password:   cfg.password,
   });
 }
 
 function saveLoginStatus(loggedIn) {
   isLoggedIn = loggedIn;
   chrome.storage.local.set({ isLoggedIn: loggedIn });
+}
+
+function clearSavedPassword() {
+  chrome.storage.local.remove(['password']);
 }
 
 function disableConfigInputs(disable) {
@@ -194,6 +197,8 @@ async function login() {
       loginBtn.textContent = '登出';
       disableConfigInputs(true);
       setDropZoneDisabled(false);
+      passwordInput.value = ''; // 登录成功后清除密码
+      clearSavedPassword();    // 清除存储中可能保存的密码
       expandConfig(false);   // login succeeded → collapse config panel
       refreshStatus();
     } else {
@@ -227,6 +232,7 @@ async function logout() {
       loginBtn.textContent = '登录';
       disableConfigInputs(false);
       setDropZoneDisabled(true);
+      clearSavedPassword();
     } else {
       showMsg(loginMsgEl, 'error', data.msg || '登出失败');
     }
