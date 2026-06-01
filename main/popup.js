@@ -36,16 +36,23 @@ const fileInput       = document.getElementById('fileInput');
 // ── Config state ──────────────────────────────────────────────────────────────
 
 let cfg = { serverHost: '', username: '', password: '' };
+let isLoggedIn = false;
 
 function loadConfig() {
-  chrome.storage.local.get(['serverHost', 'username', 'password'], (stored) => {
+  chrome.storage.local.get(['serverHost', 'username', 'password', 'isLoggedIn'], (stored) => {
     cfg.serverHost = stored.serverHost || '';
     cfg.username   = stored.username   || '';
     cfg.password   = stored.password   || '';
+    isLoggedIn     = stored.isLoggedIn || false;
 
     serverHostInput.value = cfg.serverHost;
     usernameInput.value   = cfg.username;
     passwordInput.value   = cfg.password;
+
+    if (isLoggedIn) {
+      loginBtn.textContent = '登出';
+      disableConfigInputs(true);
+    }
 
     if (cfg.serverHost) {
       expandConfig(false);   // already configured → collapse by default
@@ -58,6 +65,8 @@ function loadConfig() {
 }
 
 function saveConfig() {
+  if (isLoggedIn) return; // 已登录状态不允许修改配置
+
   cfg.serverHost = serverHostInput.value.trim().replace(/\/+$/, '');
   cfg.username   = usernameInput.value.trim();
   cfg.password   = passwordInput.value;
@@ -70,6 +79,17 @@ function saveConfig() {
     username:   cfg.username,
     password:   cfg.password,
   });
+}
+
+function saveLoginStatus(loggedIn) {
+  isLoggedIn = loggedIn;
+  chrome.storage.local.set({ isLoggedIn: loggedIn });
+}
+
+function disableConfigInputs(disable) {
+  serverHostInput.disabled = disable;
+  usernameInput.disabled   = disable;
+  passwordInput.disabled   = disable;
 }
 
 // ── Status helpers ────────────────────────────────────────────────────────────
@@ -122,7 +142,15 @@ async function refreshStatus() {
   }
 }
 
-// ── Login ─────────────────────────────────────────────────────────────────────
+// ── Login / Logout ────────────────────────────────────────────────────────────
+
+async function handleLoginLogout() {
+  if (isLoggedIn) {
+    await logout();
+  } else {
+    await login();
+  }
+}
 
 async function login() {
   saveConfig();
@@ -149,6 +177,9 @@ async function login() {
     const data = await res.json();
     if (data.err === 'ok') {
       showMsg(loginMsgEl, 'success', '登录成功');
+      saveLoginStatus(true);
+      loginBtn.textContent = '登出';
+      disableConfigInputs(true);
       expandConfig(false);   // login succeeded → collapse config panel
       refreshStatus();
     } else {
@@ -156,6 +187,36 @@ async function login() {
     }
   } catch (err) {
     showMsg(loginMsgEl, 'error', `登录失败：${err.message}`);
+  } finally {
+    loginBtn.disabled = false;
+  }
+}
+
+async function logout() {
+  if (!cfg.serverHost) {
+    return;
+  }
+
+  loginBtn.disabled = true;
+  showMsg(loginMsgEl, '', '');
+
+  try {
+    const res = await fetchWithTimeout(`${cfg.serverHost}/api/user/sign_out`, {
+      method:      'GET',
+      credentials: 'include',
+    });
+
+    const data = await res.json();
+    if (data.err === 'ok' || res.ok) {
+      showMsg(loginMsgEl, 'success', '已登出');
+      saveLoginStatus(false);
+      loginBtn.textContent = '登录';
+      disableConfigInputs(false);
+    } else {
+      showMsg(loginMsgEl, 'error', data.msg || '登出失败');
+    }
+  } catch (err) {
+    showMsg(loginMsgEl, 'error', `登出失败：${err.message}`);
   } finally {
     loginBtn.disabled = false;
   }
@@ -256,11 +317,11 @@ refreshBtn.addEventListener('click', () => {
   refreshStatus();
 });
 
-loginBtn.addEventListener('click', login);
+loginBtn.addEventListener('click', handleLoginLogout);
 
-// Enter key in password field triggers login
+// Enter key in password field triggers login/logout
 passwordInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') login();
+  if (e.key === 'Enter') handleLoginLogout();
 });
 
 // ── Drag & drop ───────────────────────────────────────────────────────────────
