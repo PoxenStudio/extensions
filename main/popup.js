@@ -146,6 +146,12 @@ async function refreshStatus() {
       const canUpgrade = upgrableVersion && upgrableVersion !== version;
       upgradeBadgeEl.classList.toggle('hidden', !canUpgrade);
       upgradeBadgeEl.title = canUpgrade ? `最新版本：${upgrableVersion}` : '';
+
+      if (data.user && data.user.is_login) {
+        saveLoginStatus(true);
+      } else {
+        saveLoginStatus(false);
+      }
     } else {
       setStatus('error', '连接失败');
     }
