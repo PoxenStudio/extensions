@@ -1,0 +1,63 @@
+{
+  "extDescription": { "message": "MyBooks 书库管理扩展，支持连接服务器、上传图书和右键搜索。" },
+  "refreshStatusTitle": { "message": "刷新状态" },
+  "statusUnconfigured": { "message": "未配置" },
+  "statusConnecting": { "message": "连接中…" },
+  "statusConnected": { "message": "已连接" },
+  "statusConnectFailed": { "message": "连接失败" },
+  "upgradeBadge": { "message": "可升级" },
+  "upgradeAvailableTitle": {
+    "message": "最新版本：$VERSION$",
+    "placeholders": { "version": { "content": "$1" } }
+  },
+  "serverConfigHeader": { "message": "服务器配置" },
+  "serverAddressLabel": { "message": "服务器地址" },
+  "usernameLabel": { "message": "用户名" },
+  "usernamePlaceholder": { "message": "用户名" },
+  "passwordLabel": { "message": "密码" },
+  "passwordPlaceholder": { "message": "密码" },
+  "loginBtnLogin": { "message": "登录" },
+  "loginBtnLogout": { "message": "登出" },
+  "loginErrorNoServer": { "message": "请先填写服务器地址" },
+  "loginSuccess": { "message": "登录成功" },
+  "loginFailedDefault": { "message": "登录失败" },
+  "loginFailedWithReason": {
+    "message": "登录失败：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "logoutSuccess": { "message": "已登出" },
+  "logoutFailedDefault": { "message": "登出失败" },
+  "logoutFailedWithReason": {
+    "message": "登出失败：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "dropZoneAriaLabel": { "message": "拖放或点击上传图书文件" },
+  "dropLabel": { "message": "拖放文件至此上传" },
+  "uploadingAriaLabel": { "message": "上传中" },
+  "uploadingText": { "message": "上传中..." },
+  "uploadUnsupportedFormat": {
+    "message": "不支持 .$EXT$ 格式，仅支持 epub / azw3 / mobi / pdf / docx",
+    "placeholders": { "ext": { "content": "$1" } }
+  },
+  "uploadNoServerOrLogin": { "message": "请先配置服务器地址并登录" },
+  "uploadSuccess": { "message": "上传成功！" },
+  "uploadSuccessBookLink": {
+    "message": "书籍 #$ID$",
+    "placeholders": { "id": { "content": "$1" } }
+  },
+  "uploadFailedDefault": { "message": "上传失败" },
+  "uploadFailedWithReason": {
+    "message": "上传失败：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "contextMenuTitle": { "message": "[MyBooks]搜索书库同名图书" },
+  "searchNoServerConfigured": { "message": "未配置 MyBooks 服务器，请先在扩展弹窗中配置服务器地址。" },
+  "searchConnectFailed": {
+    "message": "连接失败：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "overlayHeaderLabel": { "message": "MyBooks 书库搜索" },
+  "overlayCloseAriaLabel": { "message": "关闭" },
+  "overlaySearching": { "message": "搜索中…" },
+  "overlayNoResults": { "message": "未找到相关图书" }
+}

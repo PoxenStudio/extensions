@@ -1,0 +1,63 @@
+{
+  "extDescription": { "message": "MyBooks library management extension — connect to your server, upload books, and search via right-click." },
+  "refreshStatusTitle": { "message": "Refresh status" },
+  "statusUnconfigured": { "message": "Not configured" },
+  "statusConnecting": { "message": "Connecting…" },
+  "statusConnected": { "message": "Connected" },
+  "statusConnectFailed": { "message": "Connection failed" },
+  "upgradeBadge": { "message": "Update available" },
+  "upgradeAvailableTitle": {
+    "message": "Latest version: $VERSION$",
+    "placeholders": { "version": { "content": "$1" } }
+  },
+  "serverConfigHeader": { "message": "Server Settings" },
+  "serverAddressLabel": { "message": "Server Address" },
+  "usernameLabel": { "message": "Username" },
+  "usernamePlaceholder": { "message": "Username" },
+  "passwordLabel": { "message": "Password" },
+  "passwordPlaceholder": { "message": "Password" },
+  "loginBtnLogin": { "message": "Log In" },
+  "loginBtnLogout": { "message": "Log Out" },
+  "loginErrorNoServer": { "message": "Please enter a server address first" },
+  "loginSuccess": { "message": "Logged in successfully" },
+  "loginFailedDefault": { "message": "Login failed" },
+  "loginFailedWithReason": {
+    "message": "Login failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "logoutSuccess": { "message": "Logged out" },
+  "logoutFailedDefault": { "message": "Logout failed" },
+  "logoutFailedWithReason": {
+    "message": "Logout failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "dropZoneAriaLabel": { "message": "Drag and drop or click to upload a book file" },
+  "dropLabel": { "message": "Drop a file here to upload" },
+  "uploadingAriaLabel": { "message": "Uploading" },
+  "uploadingText": { "message": "Uploading..." },
+  "uploadUnsupportedFormat": {
+    "message": ".$EXT$ is not supported. Supported formats: epub / azw3 / mobi / pdf / docx",
+    "placeholders": { "ext": { "content": "$1" } }
+  },
+  "uploadNoServerOrLogin": { "message": "Please configure the server and log in first" },
+  "uploadSuccess": { "message": "Upload successful!" },
+  "uploadSuccessBookLink": {
+    "message": "Book #$ID$",
+    "placeholders": { "id": { "content": "$1" } }
+  },
+  "uploadFailedDefault": { "message": "Upload failed" },
+  "uploadFailedWithReason": {
+    "message": "Upload failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "contextMenuTitle": { "message": "[MyBooks] Search library for matching books" },
+  "searchNoServerConfigured": { "message": "No MyBooks server configured. Please set the server address in the extension popup." },
+  "searchConnectFailed": {
+    "message": "Connection failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "overlayHeaderLabel": { "message": "MyBooks Library Search" },
+  "overlayCloseAriaLabel": { "message": "Close" },
+  "overlaySearching": { "message": "Searching…" },
+  "overlayNoResults": { "message": "No matching books found" }
+}

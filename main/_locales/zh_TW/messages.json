@@ -1,0 +1,63 @@
+{
+  "extDescription": { "message": "MyBooks 書庫管理擴充功能，支援連接伺服器、上傳圖書和右鍵搜尋。" },
+  "refreshStatusTitle": { "message": "重新整理狀態" },
+  "statusUnconfigured": { "message": "未設定" },
+  "statusConnecting": { "message": "連線中…" },
+  "statusConnected": { "message": "已連線" },
+  "statusConnectFailed": { "message": "連線失敗" },
+  "upgradeBadge": { "message": "可升級" },
+  "upgradeAvailableTitle": {
+    "message": "最新版本：$VERSION$",
+    "placeholders": { "version": { "content": "$1" } }
+  },
+  "serverConfigHeader": { "message": "伺服器設定" },
+  "serverAddressLabel": { "message": "伺服器位址" },
+  "usernameLabel": { "message": "使用者名稱" },
+  "usernamePlaceholder": { "message": "使用者名稱" },
+  "passwordLabel": { "message": "密碼" },
+  "passwordPlaceholder": { "message": "密碼" },
+  "loginBtnLogin": { "message": "登入" },
+  "loginBtnLogout": { "message": "登出" },
+  "loginErrorNoServer": { "message": "請先填寫伺服器位址" },
+  "loginSuccess": { "message": "登入成功" },
+  "loginFailedDefault": { "message": "登入失敗" },
+  "loginFailedWithReason": {
+    "message": "登入失敗：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "logoutSuccess": { "message": "已登出" },
+  "logoutFailedDefault": { "message": "登出失敗" },
+  "logoutFailedWithReason": {
+    "message": "登出失敗：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "dropZoneAriaLabel": { "message": "拖放或點擊上傳圖書檔案" },
+  "dropLabel": { "message": "拖放檔案至此上傳" },
+  "uploadingAriaLabel": { "message": "上傳中" },
+  "uploadingText": { "message": "上傳中..." },
+  "uploadUnsupportedFormat": {
+    "message": "不支援 .$EXT$ 格式，僅支援 epub / azw3 / mobi / pdf / docx",
+    "placeholders": { "ext": { "content": "$1" } }
+  },
+  "uploadNoServerOrLogin": { "message": "請先設定伺服器位址並登入" },
+  "uploadSuccess": { "message": "上傳成功！" },
+  "uploadSuccessBookLink": {
+    "message": "書籍 #$ID$",
+    "placeholders": { "id": { "content": "$1" } }
+  },
+  "uploadFailedDefault": { "message": "上傳失敗" },
+  "uploadFailedWithReason": {
+    "message": "上傳失敗：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "contextMenuTitle": { "message": "[MyBooks]搜尋書庫同名圖書" },
+  "searchNoServerConfigured": { "message": "未設定 MyBooks 伺服器，請先在擴充功能彈出視窗中設定伺服器位址。" },
+  "searchConnectFailed": {
+    "message": "連線失敗：$ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "overlayHeaderLabel": { "message": "MyBooks 書庫搜尋" },
+  "overlayCloseAriaLabel": { "message": "關閉" },
+  "overlaySearching": { "message": "搜尋中…" },
+  "overlayNoResults": { "message": "未找到相關圖書" }
+}

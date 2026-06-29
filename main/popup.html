@@ -13,9 +13,9 @@
     <div class="header">
       <h1 id="serverTitle">MyBooks</h1>
       <div class="status-row">
-        <span id="statusBadge" class="badge badge-unconfigured">未配置</span>
-        <span id="upgradeBadge" class="badge badge-upgrade hidden">可升级</span>
-        <button id="refreshBtn" class="icon-btn" title="刷新状态">&#x21bb;</button>
+        <span id="statusBadge" class="badge badge-unconfigured" data-i18n="statusUnconfigured">未配置</span>
+        <span id="upgradeBadge" class="badge badge-upgrade hidden" data-i18n="upgradeBadge">可升级</span>
+        <button id="refreshBtn" class="icon-btn" data-i18n-title="refreshStatusTitle" title="刷新状态">&#x21bb;</button>
       </div>
       <span class="badge">@2026, PoxenStudio <a href="https://mybooks.top" target="_blank" rel="noopener noreferrer">MyBooks</a></span>
     </div>
@@ -23,37 +23,37 @@
     <!-- 服务器配置（可折叠） -->
     <div class="card">
       <div class="card-header" id="configToggle">
-        <span>服务器配置</span>
+        <span data-i18n="serverConfigHeader">服务器配置</span>
         <span class="toggle-icon" id="toggleIcon">&#9660;</span>
       </div>
       <div class="card-body" id="configBody">
         <div class="form-group">
-          <label for="serverHost">服务器地址</label>
+          <label for="serverHost" data-i18n="serverAddressLabel">服务器地址</label>
           <input type="text" id="serverHost" placeholder="http://127.0.0.1:8082" autocomplete="off" />
         </div>
         <div class="form-group">
-          <label for="username">用户名</label>
-          <input type="text" id="username" placeholder="用户名" autocomplete="username" />
+          <label for="username" data-i18n="usernameLabel">用户名</label>
+          <input type="text" id="username" data-i18n-placeholder="usernamePlaceholder" placeholder="用户名" autocomplete="username" />
         </div>
         <div class="form-group">
-          <label for="password">密码</label>
-          <input type="password" id="password" placeholder="密码" autocomplete="current-password" />
+          <label for="password" data-i18n="passwordLabel">密码</label>
+          <input type="password" id="password" data-i18n-placeholder="passwordPlaceholder" placeholder="密码" autocomplete="current-password" />
         </div>
         <div id="loginMsg" class="inline-msg" role="alert" aria-live="polite"></div>
-        <button id="loginBtn" class="btn btn-primary">登录</button>
+        <button id="loginBtn" class="btn btn-primary" data-i18n="loginBtnLogin">登录</button>
       </div>
     </div>
 
     <!-- 文件导入区域 -->
-    <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="拖放或点击上传图书文件">
+    <div id="dropZone" class="drop-zone" role="button" tabindex="0" data-i18n-aria-label="dropZoneAriaLabel" aria-label="拖放或点击上传图书文件">
       <div id="dropContent" class="drop-content">
         <div class="drop-icon" aria-hidden="true">&#128218;</div>
-        <p class="drop-label">拖放文件至此上传</p>
+        <p class="drop-label" data-i18n="dropLabel">拖放文件至此上传</p>
         <p class="drop-hint">epub &nbsp;/&nbsp; azw3 &nbsp;/&nbsp; mobi &nbsp;/&nbsp; pdf &nbsp;/&nbsp; docx</p>
       </div>
       <div id="uploadProgress" class="upload-progress hidden" aria-live="polite">
-        <div class="spinner" role="status" aria-label="上传中"></div>
-        <p>上传中...</p>
+        <div class="spinner" role="status" data-i18n-aria-label="uploadingAriaLabel" aria-label="上传中"></div>
+        <p data-i18n="uploadingText">上传中...</p>
       </div>
     </div>
     <div id="uploadMsg" class="upload-msg" role="alert" aria-live="polite"></div>

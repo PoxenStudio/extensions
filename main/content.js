@@ -37,7 +37,7 @@
       return false;
     }
     if (msg.type === 'mybooks-search-start') {
-      showOverlay(msg.text, null, '搜索中…');
+      showOverlay(msg.text, null, chrome.i18n.getMessage('overlaySearching'));
     } else if (msg.type === 'mybooks-search-result') {
       if (msg.error) {
         setListContent(null, msg.error);
@@ -46,7 +46,7 @@
         if (overlayEl) overlayEl.dataset.host = msg.host || '';
         setListContent(
           books.length > 0 ? books : null,
-          books.length === 0 ? '未找到相关图书' : null,
+          books.length === 0 ? chrome.i18n.getMessage('overlayNoResults') : null,
           msg.host,
         );
       }
@@ -66,8 +66,8 @@
 
     el.innerHTML = `
       <div class="${NS}-header">
-        <span class="${NS}-label">MyBooks 书库搜索</span>
-        <button class="${NS}-close-btn" aria-label="关闭">✕</button>
+        <span class="${NS}-label">${escHtml(chrome.i18n.getMessage('overlayHeaderLabel'))}</span>
+        <button class="${NS}-close-btn" aria-label="${escAttr(chrome.i18n.getMessage('overlayCloseAriaLabel'))}">✕</button>
       </div>
       <div class="${NS}-query" title="${escAttr(text)}">"${escHtml(preview)}"</div>
       <div class="${NS}-list">

@@ -33,6 +33,25 @@ const uploadProgress  = document.getElementById('uploadProgress');
 const uploadMsgEl     = document.getElementById('uploadMsg');
 const fileInput       = document.getElementById('fileInput');
 
+// ── i18n ──────────────────────────────────────────────────────────────────────
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.textContent = chrome.i18n.getMessage(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+    el.placeholder = chrome.i18n.getMessage(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+    el.title = chrome.i18n.getMessage(el.dataset.i18nTitle);
+  });
+  document.querySelectorAll('[data-i18n-aria-label]').forEach((el) => {
+    el.setAttribute('aria-label', chrome.i18n.getMessage(el.dataset.i18nAriaLabel));
+  });
+}
+
+applyI18n();
+
 // ── Config state ──────────────────────────────────────────────────────────────
 
 let cfg = { serverHost: '', username: '', password: '' };
@@ -50,7 +69,7 @@ function loadConfig() {
     passwordInput.value   = '';
 
     if (isLoggedIn) {
-      loginBtn.textContent = '登出';
+      loginBtn.textContent = chrome.i18n.getMessage('loginBtnLogout');
       disableConfigInputs(true);
       setDropZoneDisabled(false);
     } else {
@@ -61,7 +80,7 @@ function loadConfig() {
       expandConfig(false);   // already configured → collapse by default
       refreshStatus();
     } else {
-      setStatus('unconfigured', '未配置');
+      setStatus('unconfigured', chrome.i18n.getMessage('statusUnconfigured'));
       expandConfig(true);    // not yet configured → expand so user can fill in
     }
   });
@@ -119,18 +138,18 @@ function setStatus(type, text) {
 
 async function refreshStatus() {
   if (!cfg.serverHost) {
-    setStatus('unconfigured', '未配置');
+    setStatus('unconfigured', chrome.i18n.getMessage('statusUnconfigured'));
     return;
   }
 
-  setStatus('loading', '连接中…');
+  setStatus('loading', chrome.i18n.getMessage('statusConnecting'));
   refreshBtn.disabled = true;
   refreshBtn.classList.add('spinning');
 
   try {
     const res = await fetchWithTimeout(`${cfg.serverHost}/api/user/info`);
     if (!res.ok) {
-      setStatus('error', '连接失败');
+      setStatus('error', chrome.i18n.getMessage('statusConnectFailed'));
       serverTitleEl.textContent = 'MyBooks';
       return;
     }
@@ -142,10 +161,10 @@ async function refreshStatus() {
       const upgrable = data.sys.upgrable;
       const upgrableVersion = (upgrable && typeof upgrable === 'object') ? (upgrable.rev || '') : (upgrable || '');
       serverTitleEl.textContent = title;
-      setStatus('ok', version || '已连接');
+      setStatus('ok', version || chrome.i18n.getMessage('statusConnected'));
       const canUpgrade = upgrableVersion && upgrableVersion !== version;
       upgradeBadgeEl.classList.toggle('hidden', !canUpgrade);
-      upgradeBadgeEl.title = canUpgrade ? `最新版本：${upgrableVersion}` : '';
+      upgradeBadgeEl.title = canUpgrade ? chrome.i18n.getMessage('upgradeAvailableTitle', [upgrableVersion]) : '';
 
       if (data.user && data.user.is_login) {
         saveLoginStatus(true);
@@ -153,10 +172,10 @@ async function refreshStatus() {
         saveLoginStatus(false);
       }
     } else {
-      setStatus('error', '连接失败');
+      setStatus('error', chrome.i18n.getMessage('statusConnectFailed'));
     }
   } catch {
-    setStatus('error', '连接失败');
+    setStatus('error', chrome.i18n.getMessage('statusConnectFailed'));
     serverTitleEl.textContent = 'MyBooks';
   } finally {
     refreshBtn.disabled = false;
@@ -178,7 +197,7 @@ async function login() {
   saveConfig();
 
   if (!cfg.serverHost) {
-    showMsg(loginMsgEl, 'error', '请先填写服务器地址');
+    showMsg(loginMsgEl, 'error', chrome.i18n.getMessage('loginErrorNoServer'));
     return;
   }
 
@@ -198,9 +217,9 @@ async function login() {
 
     const data = await res.json();
     if (data.err === 'ok') {
-      showMsg(loginMsgEl, 'success', '登录成功');
+      showMsg(loginMsgEl, 'success', chrome.i18n.getMessage('loginSuccess'));
       saveLoginStatus(true);
-      loginBtn.textContent = '登出';
+      loginBtn.textContent = chrome.i18n.getMessage('loginBtnLogout');
       disableConfigInputs(true);
       setDropZoneDisabled(false);
       passwordInput.value = ''; // 登录成功后清除密码
@@ -208,10 +227,10 @@ async function login() {
       expandConfig(false);   // login succeeded → collapse config panel
       refreshStatus();
     } else {
-      showMsg(loginMsgEl, 'error', data.msg || '登录失败');
+      showMsg(loginMsgEl, 'error', data.msg || chrome.i18n.getMessage('loginFailedDefault'));
     }
   } catch (err) {
-    showMsg(loginMsgEl, 'error', `登录失败：${err.message}`);
+    showMsg(loginMsgEl, 'error', chrome.i18n.getMessage('loginFailedWithReason', [err.message]));
   } finally {
     loginBtn.disabled = false;
   }
@@ -233,17 +252,17 @@ async function logout() {
 
     const data = await res.json();
     if (data.err === 'ok' || res.ok) {
-      showMsg(loginMsgEl, 'success', '已登出');
+      showMsg(loginMsgEl, 'success', chrome.i18n.getMessage('logoutSuccess'));
       saveLoginStatus(false);
-      loginBtn.textContent = '登录';
+      loginBtn.textContent = chrome.i18n.getMessage('loginBtnLogin');
       disableConfigInputs(false);
       setDropZoneDisabled(true);
       clearSavedPassword();
     } else {
-      showMsg(loginMsgEl, 'error', data.msg || '登出失败');
+      showMsg(loginMsgEl, 'error', data.msg || chrome.i18n.getMessage('logoutFailedDefault'));
     }
   } catch (err) {
-    showMsg(loginMsgEl, 'error', `登出失败：${err.message}`);
+    showMsg(loginMsgEl, 'error', chrome.i18n.getMessage('logoutFailedWithReason', [err.message]));
   } finally {
     loginBtn.disabled = false;
   }
@@ -254,12 +273,12 @@ async function logout() {
 async function uploadFile(file) {
   const ext = file.name.split('.').pop().toLowerCase();
   if (!ALLOWED_EXT.has(ext)) {
-    showMsg(uploadMsgEl, 'error', `不支持 .${ext} 格式，仅支持 epub / azw3 / mobi / pdf / docx`);
+    showMsg(uploadMsgEl, 'error', chrome.i18n.getMessage('uploadUnsupportedFormat', [ext]));
     return;
   }
 
   if (!cfg.serverHost) {
-    showMsg(uploadMsgEl, 'error', '请先配置服务器地址并登录');
+    showMsg(uploadMsgEl, 'error', chrome.i18n.getMessage('uploadNoServerOrLogin'));
     return;
   }
 
@@ -282,13 +301,20 @@ async function uploadFile(file) {
     if (data.err === 'ok') {
       const bookUrl = `${cfg.serverHost}/book/${data.book_id}`;
       showMsg(uploadMsgEl, 'success', '');
-      uploadMsgEl.innerHTML =
-        `上传成功！<a href="${bookUrl}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">书籍 #${data.book_id}</a>`;
+      uploadMsgEl.textContent = chrome.i18n.getMessage('uploadSuccess');
+      const link = document.createElement('a');
+      link.href = bookUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.style.color = 'inherit';
+      link.style.textDecoration = 'underline';
+      link.textContent = chrome.i18n.getMessage('uploadSuccessBookLink', [String(data.book_id)]);
+      uploadMsgEl.appendChild(link);
     } else {
-      showMsg(uploadMsgEl, 'error', data.msg || '上传失败');
+      showMsg(uploadMsgEl, 'error', data.msg || chrome.i18n.getMessage('uploadFailedDefault'));
     }
   } catch (err) {
-    showMsg(uploadMsgEl, 'error', `上传失败：${err.message}`);
+    showMsg(uploadMsgEl, 'error', chrome.i18n.getMessage('uploadFailedWithReason', [err.message]));
   } finally {
     dropContent.classList.remove('hidden');
     uploadProgress.classList.add('hidden');

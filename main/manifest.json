@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "MyBooks",
   "version": "0.3",
-  "description": "MyBooks 书库管理扩展，支持连接服务器、上传图书和右键搜索。",
+  "default_locale": "zh_CN",
+  "description": "__MSG_extDescription__",
   "author": "PoxenStudio",
   "homepage_url": "https://mybooks.top",
   "icons": {
@@ -17,7 +18,16 @@
   "permissions": ["storage", "contextMenus", "scripting"],
   "host_permissions": ["<all_urls>"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "mybooks@mybooks.top",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   },
   "content_scripts": [
     {

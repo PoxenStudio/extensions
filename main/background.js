@@ -25,7 +25,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: 'mybooks-search',
-      title: '[MyBooks]搜索书库同名图书',
+      title: chrome.i18n.getMessage('contextMenuTitle'),
       contexts: ['selection'],
     });
   });
@@ -109,7 +109,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     safeSend(tab.id, {
       type: 'mybooks-search-result',
       text,
-      error: '未配置 MyBooks 服务器，请先在扩展弹窗中配置服务器地址。',
+      error: chrome.i18n.getMessage('searchNoServerConfigured'),
     });
     return;
   }
@@ -135,7 +135,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     safeSend(tab.id, {
       type: 'mybooks-search-result',
       text,
-      error: `连接失败：${e.message}`,
+      error: chrome.i18n.getMessage('searchConnectFailed', [e.message]),
     });
   }
 });
