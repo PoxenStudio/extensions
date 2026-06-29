@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MyBooks",
-  "version": "0.3",
+  "version": "0.4",
   "default_locale": "zh_CN",
   "description": "__MSG_extDescription__",
   "author": "PoxenStudio",
